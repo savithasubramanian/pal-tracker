@@ -40,6 +40,7 @@ public class EnvController {
 
 this.vport = port;
 this.vmemlimit=Ml;
+
 this.vcfinstind=Cii;
 this.vcfinstaddr=Cia;
 
