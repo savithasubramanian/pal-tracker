@@ -13,7 +13,13 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository{
     @Override
     public TimeEntry create(TimeEntry timeEntry) {
 
-        long id = list.size()+1;
+        long id = 0;
+        if(list.size() > 0) {
+            TimeEntry tt = list.get(list.size()-1);
+            id = tt.getId()+1;
+        } else {
+            id = 1;
+        }
         timeEntry.setId(id);
 
         list.add(timeEntry);
