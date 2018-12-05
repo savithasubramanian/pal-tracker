@@ -10,10 +10,11 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository{
 
     List<TimeEntry> list = new ArrayList<>();
 
-    long id = 0;
     @Override
     public TimeEntry create(TimeEntry timeEntry) {
-        timeEntry.setId(++id);
+
+        long id = list.size()+1;
+        timeEntry.setId(id);
 
         list.add(timeEntry);
         return timeEntry;
