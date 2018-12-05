@@ -10,9 +10,9 @@ public interface  TimeEntryRepository {
 
     public TimeEntry find(long timeEntryId) ;
 
-    public ResponseEntity<List<TimeEntry>> list() ;
+    public List<TimeEntry> list() ;
 
     public TimeEntry update(long eq, TimeEntry any) ;
 
-    public ResponseEntity<TimeEntry> delete(long timeEntryId);
+    public void delete(long timeEntryId);
 }

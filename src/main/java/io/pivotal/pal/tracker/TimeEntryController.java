@@ -11,12 +11,15 @@ import java.util.List;
 public class TimeEntryController {
 
 
+    private TimeEntryRepository inTe;
 
-    InMemoryTimeEntryRepository inTe = new InMemoryTimeEntryRepository();
-
-    public TimeEntryController(TimeEntryRepository timeEntryRepository) {
-
+    public TimeEntryController(TimeEntryRepository timeEntriesRepo) {
+        this.inTe = timeEntriesRepo;
     }
+
+    //InMemoryTimeEntryRepository inTe = new InMemoryTimeEntryRepository();
+
+
 
     @PostMapping
     public ResponseEntity create(@RequestBody TimeEntry timeEntryToCreate) {
@@ -33,32 +36,40 @@ public class TimeEntryController {
 @GetMapping("{timeEntryId}")
     public ResponseEntity<TimeEntry> read(@PathVariable long timeEntryId) {
     TimeEntry entry = new TimeEntry();
-    try {
        entry = inTe.find(timeEntryId);
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return new ResponseEntity<TimeEntry>( entry, HttpStatus.OK);
+    if (entry != null) {
+       return new ResponseEntity<TimeEntry>( entry, HttpStatus.OK);
+    }else{
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 
+    }
+
+    @GetMapping
     public ResponseEntity<List<TimeEntry>> list() {
-        return null;
+        return new ResponseEntity<>(inTe.list(), HttpStatus.OK);
+
     }
 
-    public ResponseEntity update(long timeEntryId, TimeEntry expected) {
+    @PutMapping("{timeEntryId}")
+    public ResponseEntity update(@PathVariable long timeEntryId, @RequestBody TimeEntry expected) {
         TimeEntry entry = new TimeEntry();
-        try {
-            entry = inTe.find(timeEntryId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<TimeEntry>( entry, HttpStatus.OK);
 
-    }
+            entry = inTe.update(timeEntryId,expected);
 
-    public ResponseEntity<TimeEntry> delete(long timeEntryId) {
-        return null;
+            if (entry != null) {
+                return new ResponseEntity<>(entry, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+         }
+
+    @DeleteMapping("{timeEntryId}")
+    public ResponseEntity<TimeEntry> delete(@PathVariable long timeEntryId) {
+        inTe.delete(timeEntryId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

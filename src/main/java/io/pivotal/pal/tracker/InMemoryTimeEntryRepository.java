@@ -2,6 +2,7 @@ package io.pivotal.pal.tracker;
 
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,11 +11,20 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     HashMap<Long,TimeEntry> DbTimeEntry = new HashMap<>();
 
     @Override
-    public TimeEntry create(TimeEntry any) {
+    public TimeEntry create(TimeEntry timeEntry) {
 
-        DbTimeEntry.put(any.getId(),any);
+        Long id = DbTimeEntry.size() + 1L;
 
-        return any;
+        TimeEntry newTimeEntry = new TimeEntry(
+                id,
+                timeEntry.getProjectId(),
+                timeEntry.getUserId(),
+                timeEntry.getDate(),
+                timeEntry.getHours()
+        );
+        DbTimeEntry.put(id,newTimeEntry);
+
+        return newTimeEntry;
     }
 
     @Override
@@ -24,18 +34,30 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     }
 
     @Override
-    public ResponseEntity<List<TimeEntry>> list() {
-        return null;
+    public List<TimeEntry> list() {
+        return new ArrayList<>(DbTimeEntry.values());
     }
 
     @Override
     public TimeEntry update(long eq, TimeEntry any) {
-        return null;
+
+        TimeEntry updatedEntry = new TimeEntry(
+                eq,
+                any.getProjectId(),
+                any.getUserId(),
+                any.getDate(),
+                any.getHours()
+        );
+
+        DbTimeEntry.replace(eq,updatedEntry);
+
+        return updatedEntry;
     }
 
     @Override
-    public ResponseEntity<TimeEntry> delete(long timeEntryId) {
-        return null;
+    public void delete(long timeEntryId) {
+        DbTimeEntry.remove(timeEntryId);
+
     }
 
 }
