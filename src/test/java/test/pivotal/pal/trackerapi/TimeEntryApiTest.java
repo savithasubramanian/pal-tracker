@@ -106,7 +106,7 @@ public class TimeEntryApiTest {
 
     @Test
     public void testDelete() throws Exception {
-        Long id = createTimeEntry();
+        Long id = 1L;
 
 
         ResponseEntity<String> deleteResponse = restTemplate.exchange("/time-entries/" + id, HttpMethod.DELETE, null, String.class);

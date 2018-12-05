@@ -1,7 +1,9 @@
 package test.pivotal.pal.tracker;
 
+
 import io.pivotal.pal.tracker.InMemoryTimeEntryRepository;
 import io.pivotal.pal.tracker.TimeEntry;
+import io.pivotal.pal.tracker.TimeEntryRepository;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -42,7 +44,7 @@ public class InMemoryTimeEntryRepositoryTest {
     }
 
     @Test
-    public void list() throws Exception {
+    public void list() {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
         repo.create(new TimeEntry(123L, 456L, LocalDate.parse("2017-01-08"), 8));
         repo.create(new TimeEntry(789L, 654L, LocalDate.parse("2017-01-07"), 4));
